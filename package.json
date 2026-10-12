@@ -1,0 +1,16 @@
+{
+  "name": "vidkit",
+  "private": true,
+  "license": "MIT",
+  "description": "Vidkit Player: ядро (видеоплеер и кодировщик) и сайт-презентация на React",
+  "workspaces": ["core", "site"],
+  "scripts": {
+    "dev": "npm run build:core && npm run dev -w vidkit-site",
+    "build": "npm run build:core && npm run build -w vidkit-site",
+    "build:core": "npm run build -w vidkit-player",
+    "preview": "npm run preview -w vidkit-site",
+    "demo": "npm run demo -w vidkit-site",
+    "encode": "node core/encoder/transcode.mjs",
+    "notices": "node scripts/gen-notices.mjs"
+  }
+}

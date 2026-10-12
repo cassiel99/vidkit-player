@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="../favicon.svg">
+  <title>Vidkit Player — пример с рекламой</title>
+  <style>
+    body { margin: 0; padding: 24px; background: #111; color: #ddd; font-family: system-ui; }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    vidkit-player { --vp-accent: #4f8cff; }  /* свой цвет акцента */
+    pre { background: #000; padding: 12px; border-radius: 8px; min-height: 80px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <script src="../player/vidkit-player.js"></script>
+    <vidkit-player id="p" src="../media/demo/master.m3u8" poster="../media/demo/poster.jpg" title="Пример с рекламой"></vidkit-player>
+    <h3>События</h3>
+    <pre id="log"></pre>
+  </div>
+  <script>
+    const el = document.getElementById('p');
+    // Реклама задаётся до или после создания плеера
+    el.ads = [
+      { type: 'preroll',  src: '../media/ads/ad1.mp4', skipAfter: 5, clickUrl: 'https://example.com' },
+      { type: 'midroll',  at: '50%', src: '../media/ads/ad2.mp4', skipAfter: 3 },
+      { type: 'postroll', src: '../media/ads/ad2.mp4', skipAfter: null }, // нельзя пропустить
+    ];
+    // Плеер создаётся внутри элемента после вставки в страницу
+    queueMicrotask(() => {
+      const log = (t) => { document.getElementById('log').textContent += t + '\n'; };
+      ['adbreakstart', 'adstart', 'adskip', 'adend', 'adclick', 'aderror', 'adbreakend']
+        .forEach((n) => el.player.on(n, (d) => log(n + (d && d.index ? ` (${d.index}/${d.total})` : ''))));
+    });
+  </script>
+</body>
+</html>

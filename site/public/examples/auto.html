@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="../favicon.svg">
+  <title>Vidkit Player — автоподключение</title>
+  <style>
+    body { margin: 0; padding: 24px 16px; background: #111; color: #ddd; font: 16px/1.5 system-ui, sans-serif; }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    h2 { margin: 32px 0 8px; font-size: 18px; }
+    video { display: block; max-width: 100%; background: #000; }
+    code { background: #222; padding: 1px 6px; border-radius: 4px; }
+  </style>
+  <!-- Единственное изменение на странице: подключили скрипт -->
+  <script src="../player/vidkit-player.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Автоподключение Vidkit Player</h1>
+
+    <h2>1. Обычный <code>&lt;video controls&gt;</code> → станет плеером</h2>
+    <video id="v-auto" controls src="../media/demo-clip.mp4" poster="../media/demo/poster.jpg" width="860" height="484"></video>
+
+    <h2>2. Видео из HLS (<code>&lt;source&gt;</code>) → плеер с выбором качества до 4K</h2>
+    <video id="v-hls" controls poster="../media/demo/poster.jpg">
+      <source src="../media/demo/master.m3u8" type="application/x-mpegURL">
+    </video>
+
+    <h2>3. Фоновое видео без <code>controls</code> → остаётся как есть</h2>
+    <video id="v-bg" autoplay muted loop playsinline src="../media/ads/ad1.mp4" width="320"></video>
+
+    <h2>4. <code>data-vidkit="off"</code> → исключено автором</h2>
+    <video id="v-off" controls data-vidkit="off" src="../media/demo-clip.mp4" width="320"></video>
+
+    <h2>5. С рекламой через <code>data-ads</code></h2>
+    <video id="v-ads" controls src="../media/demo-clip.mp4" poster="../media/demo/poster.jpg"
+      data-ads='[{"type":"preroll","src":"../media/ads/ad1.mp4","skipAfter":5}]'></video>
+
+    <h2>6. Видео, добавленное скриптом позже → тоже подхватывается</h2>
+    <div id="later"></div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const v = document.createElement('video');
+      v.id = 'v-later'; v.controls = true; v.src = '../media/demo-clip.mp4';
+      document.getElementById('later').appendChild(v);
+    }, 600);
+  </script>
+</body>
+</html>

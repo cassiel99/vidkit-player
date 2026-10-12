@@ -1,0 +1,26 @@
+{
+  "name": "vidkit-player",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Встраиваемый видеоплеер: HLS, качество до 4K, реклама (pre/mid/post-roll, VAST) с кнопкой «Пропустить», автозамена <video>.",
+  "main": "dist/vidkit-player.js",
+  "module": "dist/vidkit-player.esm.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/vidkit-player.esm.js",
+      "default": "./dist/vidkit-player.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "types", "README.md"],
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "keywords": ["video", "player", "hls", "4k", "vast", "ads"],
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "hls.js": "1.5.17"
+  }
+}

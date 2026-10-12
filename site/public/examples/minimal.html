@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="../favicon.svg">
+  <title>Vidkit Player — минимальный пример</title>
+  <style>body { margin: 0; padding: 24px; background: #111; font-family: system-ui; } .wrap { max-width: 900px; margin: 0 auto; }</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- Всё, что нужно: один скрипт и один тег -->
+    <script src="../player/vidkit-player.js"></script>
+    <vidkit-player
+      src="../media/demo/master.m3u8"
+      poster="../media/demo/poster.jpg"
+      title="Минимальный пример">
+    </vidkit-player>
+  </div>
+</body>
+</html>

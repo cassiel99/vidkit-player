@@ -1,0 +1,197 @@
+/* Vidkit Player — стили. Цвет акцента меняется переменной --vp-accent на контейнере. */
+vidkit-player { display: block; }
+.vp {
+  --vp-accent: #ff3d57;
+  --vp-ad: #ffcc00;
+  --vp-fg: #fff;
+  --vp-menu-bg: rgba(18, 18, 24, .94);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  color: var(--vp-fg);
+  border-radius: 14px;
+  overflow: hidden;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  font: 500 13px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  isolation: isolate;
+  box-sizing: border-box;
+}
+.vp *, .vp *::before, .vp *::after { box-sizing: border-box; }
+.vp:focus-visible { box-shadow: 0 0 0 2px var(--vp-accent); }
+.vp [hidden] { display: none !important; }
+.vp-video, .vp-adv { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.vp-adv { cursor: pointer; }
+.vp-ico { width: 24px; height: 24px; fill: currentColor; flex: none; }
+
+/* большая кнопка play */
+.vp-bigplay {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 76px; height: 76px; border-radius: 50%; border: 0; cursor: pointer; padding: 0;
+  background: color-mix(in srgb, var(--vp-accent) 92%, #000); color: #fff;
+  display: grid; place-items: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .45);
+  transition: transform .18s, opacity .18s;
+}
+.vp-bigplay .vp-ico { width: 38px; height: 38px; }
+.vp-bigplay:hover { transform: scale(1.08); }
+.vp:not(.vp-paused) .vp-bigplay, .vp-adloading .vp-bigplay { opacity: 0; pointer-events: none; transform: scale(.8); }
+
+/* название */
+.vp-title {
+  position: absolute; inset: 0 0 auto 0; padding: 18px 20px 48px; font-size: 16px; font-weight: 600;
+  background: linear-gradient(rgba(0, 0, 0, .7), transparent);
+  opacity: 0; transition: opacity .25s; pointer-events: none; text-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+}
+.vp.vp-active .vp-title, .vp.vp-paused .vp-title { opacity: 1; }
+
+/* нижняя панель */
+.vp-bar {
+  position: absolute; inset: auto 0 0 0; padding: 40px 12px 6px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .78));
+  opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s;
+}
+.vp.vp-active .vp-bar, .vp.vp-paused .vp-bar, .vp:focus-within .vp-bar { opacity: 1; transform: none; }
+.vp:not(.vp-active):not(.vp-paused) { cursor: none; }
+
+.vp-row { display: flex; align-items: center; gap: 2px; }
+.vp-spacer { flex: 1; }
+.vp-btn {
+  width: 42px; height: 42px; border: 0; background: none; color: inherit; cursor: pointer; padding: 0;
+  display: grid; place-items: center; border-radius: 8px; opacity: .92; transition: background .15s, opacity .15s;
+}
+.vp-btn:hover { opacity: 1; background: rgba(255, 255, 255, .14); }
+.vp-btn:focus-visible { outline: 2px solid var(--vp-accent); }
+.vp-btn.vp-on { color: var(--vp-accent); }
+.vp-time { margin-left: 8px; font-variant-numeric: tabular-nums; opacity: .95; white-space: nowrap; }
+.vp-badge {
+  margin-right: 6px; padding: 3px 8px; border-radius: 6px; background: rgba(255, 255, 255, .16);
+  font-size: 12px; font-weight: 700; letter-spacing: .02em; white-space: nowrap;
+}
+.vp-badge.vp-hd { background: var(--vp-accent); }
+.vp-badge.vp-4k { background: linear-gradient(135deg, #ffb300, #ff6a00); color: #1b1000; }
+
+/* громкость */
+.vp-vol { display: flex; align-items: center; }
+.vp-volrange {
+  --p: 100%;
+  -webkit-appearance: none; appearance: none; width: 0; opacity: 0; height: 4px; margin: 0; border-radius: 4px; cursor: pointer;
+  background: linear-gradient(90deg, #fff var(--p), rgba(255, 255, 255, .3) var(--p));
+  transition: width .2s, opacity .2s, margin .2s;
+}
+.vp-vol:hover .vp-volrange, .vp-volrange:focus-visible { width: 72px; opacity: 1; margin: 0 8px 0 2px; }
+.vp-volrange::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+.vp-volrange::-moz-range-thumb { width: 12px; height: 12px; border: 0; border-radius: 50%; background: #fff; }
+
+/* прогресс */
+.vp-progress { position: relative; height: 22px; margin: 0 4px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+.vp-track { position: relative; width: 100%; height: 4px; border-radius: 4px; background: rgba(255, 255, 255, .26); transition: height .12s; }
+.vp-progress:hover .vp-track, .vp-scrubbing .vp-track { height: 6px; }
+.vp-buffered, .vp-played { position: absolute; left: 0; top: 0; bottom: 0; border-radius: inherit; width: 0; }
+.vp-buffered { background: rgba(255, 255, 255, .38); }
+.vp-played { background: var(--vp-accent); }
+.vp-marks i { position: absolute; top: 0; bottom: 0; width: 4px; margin-left: -2px; border-radius: 1px; background: var(--vp-ad); }
+.vp-handle {
+  position: absolute; top: 50%; left: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%;
+  background: var(--vp-accent); transform: scale(0); transition: transform .12s;
+}
+.vp-progress:hover .vp-handle, .vp-scrubbing .vp-handle { transform: scale(1); }
+.vp-tip {
+  position: absolute; bottom: 24px; padding: 3px 8px; border-radius: 6px; background: rgba(0, 0, 0, .85);
+  font-size: 12px; font-variant-numeric: tabular-nums; pointer-events: none; white-space: nowrap;
+}
+
+/* спиннер */
+.vp-spinner { position: absolute; left: 50%; top: 50%; translate: -50% -50%; pointer-events: none; }
+.vp-spinner i {
+  display: block; width: 52px; height: 52px; border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, .25); border-top-color: #fff; animation: vp-spin .8s linear infinite;
+}
+@keyframes vp-spin { to { rotate: 360deg; } }
+
+/* подсказки */
+.vp-toast {
+  position: absolute; left: 50%; top: 14%; translate: -50% 0; padding: 8px 16px; border-radius: 999px;
+  background: rgba(0, 0, 0, .72); backdrop-filter: blur(6px); font-size: 14px; pointer-events: none; white-space: nowrap;
+}
+.vp-skip {
+  position: absolute; top: 50%; translate: 0 -50%; width: 28%; aspect-ratio: 1; max-width: 220px; border-radius: 50%;
+  background: rgba(255, 255, 255, .16); display: grid; place-items: center; font-size: 18px; font-weight: 700; pointer-events: none;
+}
+.vp-skip-l { left: -4%; } .vp-skip-r { right: -4%; }
+.vp-skip.vp-pop { animation: vp-pop .55s ease-out; }
+@keyframes vp-pop { 0% { opacity: 0; scale: .7; } 25% { opacity: 1; scale: 1; } 100% { opacity: 0; scale: 1.05; } }
+
+/* меню настроек */
+.vp-menu {
+  position: absolute; right: 12px; bottom: 74px; min-width: 250px; padding: 6px; border-radius: 12px; z-index: 4;
+  background: var(--vp-menu-bg); backdrop-filter: blur(14px); box-shadow: 0 10px 40px rgba(0, 0, 0, .5);
+}
+.vp-menu button {
+  display: flex; align-items: center; gap: 12px; width: 100%; padding: 9px 12px; border: 0; border-radius: 8px;
+  background: none; color: inherit; font: inherit; font-size: 14px; text-align: left; cursor: pointer;
+}
+.vp-menu button:hover { background: rgba(255, 255, 255, .12); }
+.vp-menu button > span { flex: 1; }
+.vp-menu button > em { font-style: normal; opacity: .7; font-size: 13px; }
+.vp-menu .vp-ico { width: 20px; height: 20px; }
+.vp-menu .vp-check { opacity: 0; } .vp-menu button.on .vp-check { opacity: 1; color: var(--vp-accent); }
+.vp-menu-head { font-weight: 700; border-bottom: 1px solid rgba(255, 255, 255, .12); border-radius: 8px 8px 0 0 !important; margin-bottom: 4px; }
+.vp-menu b { font-size: 10px; padding: 1px 4px; border-radius: 4px; background: var(--vp-accent); margin-left: 4px; vertical-align: 1px; }
+
+/* статистика */
+.vp-stats {
+  position: absolute; left: 14px; top: 56px; padding: 10px 12px; min-width: 260px; border-radius: 10px;
+  background: rgba(0, 0, 0, .72); backdrop-filter: blur(8px); font: 12px/1.6 ui-monospace, Consolas, monospace; pointer-events: none;
+}
+.vp-stats b { display: block; margin-bottom: 4px; font: 700 12px system-ui; letter-spacing: .06em; text-transform: uppercase; color: var(--vp-accent); }
+.vp-stats div { display: flex; justify-content: space-between; gap: 18px; }
+.vp-stats div span:first-child { opacity: .65; }
+
+/* ---------- реклама ---------- */
+.vp-adtop { position: absolute; left: 14px; top: 14px; z-index: 3; display: flex; align-items: center; gap: 8px; }
+.vp-adchip {
+  padding: 4px 10px; border-radius: 6px; background: var(--vp-ad); color: #1a1400;
+  font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.vp-adlink {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 0; border-radius: 6px; cursor: pointer;
+  background: rgba(0, 0, 0, .6); backdrop-filter: blur(6px); color: #fff; font: inherit; font-size: 13px; font-weight: 600;
+}
+.vp-adlink .vp-ico { width: 15px; height: 15px; }
+.vp-adlink:hover { background: rgba(0, 0, 0, .8); }
+.vp-skipad {
+  position: absolute; right: 0; bottom: 74px; z-index: 3; display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 18px 11px 20px; border: 0; border-radius: 6px 0 0 6px; cursor: pointer;
+  background: rgba(20, 20, 26, .85); backdrop-filter: blur(6px); color: #fff; font: inherit; font-size: 15px; font-weight: 600;
+  border-left: 3px solid var(--vp-ad);
+  transition: background .15s;
+}
+.vp-skipad .vp-ico { width: 20px; height: 20px; }
+.vp-skipad:hover:not(:disabled) { background: rgba(60, 60, 70, .95); }
+.vp-skipad:disabled { cursor: default; color: rgba(255, 255, 255, .75); }
+.vp-adprog { height: 3px; margin: 0 4px 6px; background: rgba(255, 255, 255, .28); border-radius: 2px; overflow: hidden; }
+.vp-adprog i { display: block; height: 100%; width: 0; background: var(--vp-ad); }
+.vp-ad .vp-progress, .vp-ad .vp-settings, .vp-ad .vp-pip, .vp-ad .vp-theater-btn,
+.vp-ad .vp-badge, .vp-ad .vp-title, .vp-ad .vp-stats { display: none; }
+
+/* режимы */
+.vp.vp-fullscreen { border-radius: 0; }
+.vp.vp-theater { width: 100vw; max-width: none; position: relative; left: 50%; margin-left: -50vw; border-radius: 0; max-height: 86vh; }
+
+@media (max-width: 560px) {
+  .vp-vol .vp-volrange, .vp-theater-btn { display: none; }
+  .vp-btn { width: 38px; height: 38px; }
+  .vp-bigplay { width: 60px; height: 60px; }
+  .vp-menu { right: 6px; bottom: 66px; min-width: 220px; }
+  .vp-skipad { bottom: 66px; padding: 9px 14px; font-size: 14px; }
+}
+@media (max-width: 420px) {
+  .vp-btn { width: 36px; }
+  .vp-time { margin-left: 2px; font-size: 12px; }
+  .vp-badge { margin-right: 2px; padding: 2px 6px; font-size: 11px; }
+  .vp-bar { padding-inline: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .vp *, .vp { transition: none !important; animation: none !important; } }

@@ -1,0 +1,16 @@
+node_modules/
+# Собираемое и генерируемое — не хранится в git (npm run build / npm run demo)
+core/dist/
+out/
+site/dist/
+site/public/player/
+site/public/media/
+*.log
+
+# Секреты и локальные настройки — никогда не коммитим
+.env
+.env.*
+*.pem
+*.key
+.claude/
+.DS_Store
